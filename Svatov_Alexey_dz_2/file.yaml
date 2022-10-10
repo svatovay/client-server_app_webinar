@@ -1,0 +1,9 @@
+items:
+- Чай
+- Кофе
+- Печенье
+price:
+  CNY: 700元
+  EUR: 100€
+  RUB: 5900₽
+quantity: 10
