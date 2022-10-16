@@ -1,10 +1,14 @@
 import json
 import sys
 from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
+import logging
 
 from common.variables import ACTION, ACCOUNT_NAME, RESPONSE, MAX_CONNECTIONS, \
     PRESENCE, TIME, USER, ERROR, DEFAULT_PORT
 from common.utils import get_message, send_message
+
+# Инициализация логирования сервера.
+logger = logging.getLogger('server_dist')
 
 
 def process_client_message(message):
@@ -32,12 +36,14 @@ def main():
         else:
             listen_port = DEFAULT_PORT
         if not (1024 < listen_port < 65535):
-            raise ValueError
+            logger.critical(
+                f'Попытка запуска клиента с неподходящим номером порта: {listen_port}. '
+                f'Значение порта может быть в диапазоне от 1024 до 65535.')
+            sys.exit(1)
     except IndexError:
-        print('После параметра \"-p\" необходимо указать номер порта')
-        sys.exit(1)
-    except ValueError:
-        print('Значение порта может быть в диапазоне от 1024 до 65535')
+        logger.error(
+            f'Неверно указан параметр \"-p\".'
+            f'После параметра \"-p\" необходимо указать номер порта.')
         sys.exit(1)
 
     try:
@@ -46,7 +52,9 @@ def main():
         else:
             listen_address = ''
     except IndexError:
-        print('После параметра \"-a\" необходимо указать адрес, который будет слушаться сервером')
+        logger.error(
+            f'Неверно указан параметр \"-a\".'
+            f'После параметра \"-a\" необходимо указать адрес, который будет слушаться сервером.')
         sys.exit(1)
 
     transport = socket(AF_INET, SOCK_STREAM)
@@ -58,12 +66,12 @@ def main():
         client, client_address = transport.accept()
         try:
             message_from_client = get_message(client)
-            print(message_from_client)
+            logger.info(f'CLIENT MESSAGE: {message_from_client}')
             response = process_client_message(message_from_client)
             send_message(client, response)
             client.close()
         except (ValueError, json.JSONDecodeError):
-            print('Принято некорректное сообщение от клиента')
+            logger.critical('Принято некорректное сообщение от клиента')
             client.close()
 
 
