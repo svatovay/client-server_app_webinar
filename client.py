@@ -4,6 +4,9 @@ from socket import socket, AF_INET, SOCK_STREAM
 import time
 import logging
 
+from common.decos import Log
+from logs.config import client_log_config
+
 from common.variables import ACTION, PRESENCE, TIME, USER, ACCOUNT_NAME, \
     RESPONSE, ERROR, DEFAULT_IP_ADDRESS, DEFAULT_PORT
 from common.utils import get_message, send_message
@@ -12,6 +15,7 @@ from common.utils import get_message, send_message
 logger = logging.getLogger('client_dist')
 
 
+@Log(logger)
 def create_presence(account_name='Guest'):
     '''
     Функция генерирует запрос о присутствии клиента
@@ -28,6 +32,7 @@ def create_presence(account_name='Guest'):
     return out
 
 
+@Log(logger)
 def process_ans(message):
     '''
     Функция разбирает ответ сервера
@@ -41,6 +46,7 @@ def process_ans(message):
     raise ValueError
 
 
+@Log(logger)
 def main():
     '''Загружаем параметы коммандной строки'''
     try:
@@ -68,5 +74,6 @@ def main():
     except (ValueError, json.JSONDecodeError):
         logger.critical(f'Не удалось декодировать сообщение сервера: {answer}.')
 
-        if __name__ == '__main__':
-            main()
+
+if __name__ == '__main__':
+    main()

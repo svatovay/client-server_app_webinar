@@ -2,15 +2,18 @@ import json
 import sys
 from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 import logging
+from logs.config import server_log_config
 
 from common.variables import ACTION, ACCOUNT_NAME, RESPONSE, MAX_CONNECTIONS, \
     PRESENCE, TIME, USER, ERROR, DEFAULT_PORT
 from common.utils import get_message, send_message
+from common.decos import Log
 
 # Инициализация логирования сервера.
 logger = logging.getLogger('server_dist')
 
 
+@Log(logger)
 def process_client_message(message):
     '''
     Обработчик сообщений от клиентов, принимает словарь -
@@ -29,6 +32,7 @@ def process_client_message(message):
     }
 
 
+@Log(logger)
 def main():
     try:
         if '-p' in sys.argv:

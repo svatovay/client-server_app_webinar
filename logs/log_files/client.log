@@ -2,3 +2,7 @@
 2022-10-16 16:50:24,522   ERROR      client_log_config.py      Test error event
 2022-10-16 16:50:24,522   DEBUG      client_log_config.py      Test debug event
 2022-10-16 16:50:24,522   INFO       client_log_config.py      Test info event
+2022-10-22 11:58:14,432   DEBUG      client.py                 Функция main вызвана из функции <module> в модуле client.py с аргументами: (); {}
+2022-10-22 11:58:14,433   DEBUG      client.py                 Функция create_presence вызвана из функции main в модуле client.py с аргументами: (); {}
+2022-10-22 11:58:14,433   DEBUG      client.py                 Функция process_ans вызвана из функции main в модуле client.py с аргументами: ({'response': 200},); {}
+2022-10-22 11:58:14,433   INFO       client.py                 SERVER ANSWER: 200 : OK
